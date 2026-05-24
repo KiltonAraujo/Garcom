@@ -1,4 +1,5 @@
 "use client";
+import { Suspense } from "react";
 import { Header } from "@/components/cliente-header";
 import { Footer } from "@/components/cliente-footer";
 import { CardPedido } from "./CardPedido";
@@ -6,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
-export default function ClienteComanda() {
+function ClienteComandaContent() {
   const searchParams = useSearchParams();
   const mesa_id = searchParams?.get("mesa_id") ?? undefined;
 
@@ -90,6 +91,14 @@ export default function ClienteComanda() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function ClienteComanda() {
+  return (
+    <Suspense fallback={null}>
+      <ClienteComandaContent />
+    </Suspense>
   );
 }
 

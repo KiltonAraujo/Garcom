@@ -1,6 +1,6 @@
 
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { Header } from "@/components/cliente-header";
 import { Footer } from "@/components/cliente-footer";
 import { useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ type ItemCardapio = {
   imagem: string;
 };
 
-const ClienteCardapio = () => {
+const ClienteCardapioContent = () => {
   const { itens, carregando, categorias, restauranteId } = useItens();
   const [formAberto, setFormAberto] = useState(false);
   const [itemSelecionado, setItemSelecionado] = useState<Item | null>(null);
@@ -301,4 +301,10 @@ const ClienteCardapio = () => {
   );
 };
 
-export default ClienteCardapio;
+export default function ClienteCardapio() {
+  return (
+    <Suspense fallback={null}>
+      <ClienteCardapioContent />
+    </Suspense>
+  );
+}

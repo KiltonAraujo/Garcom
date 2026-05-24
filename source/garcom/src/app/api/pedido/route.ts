@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db";
-import { pedido } from "@/db/schema";
+import { pedido, pedido_status_enum } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { mesa } from "@/db/schema/mesa";
+
+type PedidoStatus = (typeof pedido_status_enum.enumValues)[number];
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +27,12 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get("id");
     const mesa_id = searchParams.get("mesa_id");
-    const status = searchParams.get("status");
+    const rawStatus = searchParams.get("status");
+    const status: PedidoStatus | null = pedido_status_enum.enumValues.includes(
+      rawStatus as PedidoStatus,
+    )
+      ? (rawStatus as PedidoStatus)
+      : null;
     let result;
 
     if (id) {

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { Header } from "@/components/cliente-header";
 import { Footer } from "@/components/cliente-footer";
 import { Input } from "@/components/ui/input";
@@ -19,7 +19,7 @@ type ItemPedido = {
   }
 };
 
-const ClientePedido = () => {
+const ClientePedidoContent = () => {
   const [itensPedido, setItensPedido] = useState<ItemPedido[]>([]);
   const [pedidoId, setPedidoId] = useState<string | null>(null);
   const [carregando, setCarregando] = useState(true);
@@ -246,4 +246,10 @@ const ClientePedido = () => {
   );
 };
 
-export default ClientePedido;
+export default function ClientePedido() {
+  return (
+    <Suspense fallback={null}>
+      <ClientePedidoContent />
+    </Suspense>
+  );
+}
